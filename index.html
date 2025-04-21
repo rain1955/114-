@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>114年國中會考倒數計時</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+            transition: background 0.5s ease;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .container:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #0277bd;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #0277bd, #00bcd4);
+            border-radius: 3px;
+        }
+        
+        .countdown-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .countdown-item {
+            margin: 10px;
+            padding: 15px;
+            min-width: 120px;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #0288d1, #03a9f4);
+            box-shadow: 0 5px 15px rgba(3, 169, 244, 0.3);
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .countdown-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(3, 169, 244, 0.4);
+        }
+        
+        .countdown-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .countdown-label {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cheer {
+            font-size: 1.5em;
+            color: #00796b;
+            margin: 30px 0;
+            font-weight: bold;
+            position: relative;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(0, 150, 136, 0.1);
+        }
+        
+        .inspiration-quote {
+            font-style: italic;
+            color: #555;
+            margin: 20px 0;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9800, #ff5722);
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+            position: relative;
+        }
+        
+        .tip-button {
+            margin-top: 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tip-button:hover {
+            background: #388e3c;
+            transform: scale(1.05);
+        }
+        
+        .tip-content {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            border-left: 4px solid #4caf50;
+            text-align: left;
+        }
+        
+        .floating-bubbles {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bubble {
+            position: absolute;
+            bottom: -20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: bubble-rise linear infinite;
+        }
+        
+        @keyframes bubble-rise {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-800px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .countdown-item {
+                min-width: 90px;
+                padding: 10px;
+            }
+            
+            .countdown-number {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>114 年國中教育會考倒數</h1>
+        
+        <div class="countdown-wrapper" id="countdown">
+            <!-- Will be filled by JavaScript -->
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="cheer">加油！會考在即，努力最後一哩路！</div>
+        
+        <div class="inspiration-quote">
+            「成功不是偶然，而是日積月累的堅持與努力。相信自己，你已經準備好了！」
+        </div>
+        
+        <button class="tip-button" id="tip-button">獲取備考小技巧</button>
+        <div class="tip-content" id="tip-content">
+            <p><strong>今日備考小技巧：</strong></p>
+            <ul style="list-style-type: none; padding-left: 10px; text-align: left;">
+                <li>✓ 複習時將知識點分類整理，建立知識網路</li>
+                <li>✓ 確保每天有充足的休息和睡眠</li>
+                <li>✓ 做深呼吸或簡單伸展運動來緩解壓力</li>
+                <li>✓ 每完成一個小目標就給自己適當的獎勵</li>
+                <li>✓ 與同學討論難題，相互解惑</li>
+            </ul>
+        </div>
+        
+        <div class="floating-bubbles" id="bubbles-container">
+            <!-- Bubbles will be added by JavaScript -->
+        </div>
+    </div>
+    
+    <footer>
+        祝所有考生考試順利，金榜題名！
+    </footer>
+    
+    <script>
+        // 創建氣泡效果
+        function createBubbles() {
+            const container = document.getElementById('bubbles-container');
+            const bubbleCount = 15;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // 隨機大小、位置和動畫時間
+                const size = Math.random() * 30 + 10;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${left}%`;
+                bubble.style.animationDuration = `${animationDuration}s`;
+                bubble.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(bubble);
+            }
+        }
+        
+        // 倒數計時功能
+        function updateCountdown() {
+            const examDate = new Date("2025-05-17T08:30:00"); // 考試日上午8:30
+            const now = new Date();
+            const timeDiff = examDate - now;
+            
+            const countdownElement = document.getElementById("countdown");
+            
+            if (timeDiff <= 0) {
+                countdownElement.innerHTML = "<div class='countdown-item'><div class='countdown-number'>會考加油！</div><div class='countdown-label'>現在就是發揮的時刻！</div></div>";
+                document.getElementById("progress-bar").style.width = "100%";
+                return;
+            }
+            
+            // 計算剩餘天數、小時、分鐘和秒數
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            
+            // 更新倒數計時顯示
+            countdownElement.innerHTML = `
+                <div class="countdown-item">
+                    <div class="countdown-number">${days}</div>
+                    <div class="countdown-label">天</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number">${hours}</div>
+                    <div class="countdown-label">小時</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number">${minutes}</div>
+                    <div class="countdown-label">分鐘</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number">${seconds}</div>
+                    <div class="countdown-label">秒</div>
+                </div>
+            `;
+            
+            // 計算進度（假設準備時間為180天）
+            const totalPrepDays = 180;
+            const daysLeft = days;
+            const daysCompleted = totalPrepDays - daysLeft;
+            const progressPercentage = (daysCompleted / totalPrepDays) * 100;
+            document.getElementById("progress-bar").style.width = `${Math.min(Math.max(progressPercentage, 0), 100)}%`;
+        }
+        
+        // 小技巧按鈕功能
+        document.getElementById("tip-button").addEventListener("click", function() {
+            const tipContent = document.getElementById("tip-content");
+            if (tipContent.style.display === "block") {
+                tipContent.style.display = "none";
+                this.textContent = "獲取備考小技巧";
+            } else {
+                tipContent.style.display = "block";
+                this.textContent = "隱藏小技巧";
+            }
+        });
+        
+        // 根據時間改變背景色
+        function updateBackgroundColor() {
+            const hour = new Date().getHours();
+            let gradient;
+            
+            if (hour >= 5 && hour < 10) {
+                // 早晨
+                gradient = "linear-gradient(135deg, #ffefba 0%, #ffffff 100%)";
+            } else if (hour >= 10 && hour < 16) {
+                // 白天
+                gradient = "linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%)";
+            } else if (hour >= 16 && hour < 19) {
+                // 傍晚
+                gradient = "linear-gradient(135deg, #ffd3b6 0%, #ffaaa5 100%)";
+            } else {
+                // 夜晚
+                gradient = "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)";
+            }
+            
+            document.body.style.background = gradient;
+        }
+        
+        // 隨機更改勵志名言
+        function setRandomQuote() {
+            const quotes = [
+                "「成功不是偶然，而是日積月累的堅持與努力。相信自己，你已經準備好了！」",
+                "「每一次的考試都是對自己能力的肯定，展現你的實力，無需害怕！」",
+                "「態度決定高度，心態決定格局。保持積極心態，迎接挑戰！」",
+                "「不要問風在哪個方向，而是調整風帆的方向。你的未來由你掌握！」",
+                "「當你感到困難時，記住：這不是終點，而是你成長的機會。」",
+                "「世上沒有不可能的事，只有不堅持到底的人。堅持就是勝利！」"
+            ];
+            
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.querySelector('.inspiration-quote').textContent = quotes[randomIndex];
+        }
+        
+        // 初始化頁面
+        window.onload = function() {
+            createBubbles();
+            updateCountdown();
+            updateBackgroundColor();
+            setRandomQuote();
+            
+            // 每秒更新倒數計時
+            setInterval(updateCountdown, 1000);
+            
+            // 每小時更新背景顏色
+            setInterval(updateBackgroundColor, 3600000);
+            
+            // 每6小時更改勵志名言
+            setInterval(setRandomQuote, 21600000);
+        };
+    </script>
+</body>
+</html>
